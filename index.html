@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link href="http://bcs.hitevision.com/admin/css/bootstrap.min.css" rel="stylesheet"/> 
+    <link href="http://bcs.hitevision.com/admin/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet"/> 
+    <link href="http://bcs.hitevision.com/admin/assets/ionicon/css/ionicons.min.css" rel="stylesheet"/> 
+    <link href="http://bcs.hitevision.com/admin/css/material-design-iconic-font.min.css" rel="stylesheet"> 
+    <link href="http://bcs.hitevision.com/admin/css/simple-line-icons.css" rel="stylesheet"> 
+    <link href="http://bcs.hitevision.com/admin/css/animate.css" rel="stylesheet"/> 
+    <link href="http://bcs.hitevision.com/admin/css/waves-effect.css" rel="stylesheet"> 
+    <link href="http://bcs.hitevision.com/admin/css/helper.css" rel="stylesheet" type="text/css"/> 
+    <link href="http://bcs.hitevision.com/admin/css/style.css" rel="stylesheet" type="text/css"/> 
+    <link href="http://bcs.hitevision.com/admin/css/tree.css" rel="stylesheet"> 
+    <link href="http://bcs.hitevision.com/admin/css/tree.css" rel="stylesheet"> 
+    <link href="http://bcs.hitevision.com/admin/bower_components/angular-loading-bar/build/loading-bar.css" rel="stylesheet"> 
+    <link href="http://bcs.hitevision.com/admin/bower_components/sweetalert/dist/sweetalert.css" rel="stylesheet"> 
+    <link rel="stylesheet" type="text/css" href="http://bcs.hitevision.com/admin/bower_components/angular-tree-control/css/tree-control-attribute.css"> 
+   <link href="bower_components/isteven-angular-multiselect/isteven-multi-select.css" rel="stylesheet"> 
+   <link href="http://bcs.hitevision.com/admin/views/admin/hht_patch/hht.css" rel="stylesheet" type="text/css"> 
+   <script src="http://bcs.hitevision.com/admin/views/admin/hht_patch/hht.js"></script> 
+</head>
+<body>
+    <div class="left">
+        <div>
+            <img src="image/email.png" alt="">
+            <span>用户权限管理</span> 
+            <span><b>+</b></span>
+        </div>
+        <ul>
+            <li>&nbsp;&nbsp;&nbsp;<a href="#" class="btn">组织结构</a></li>
+            <li>&nbsp;&nbsp;&nbsp;<a href="#">角色管理</a></li>
+            <li>&nbsp;&nbsp;&nbsp;<a href="#">用户管理</a></li>
+            <li>&nbsp;&nbsp;&nbsp;<a href="#">菜单管理</a></li>
+        </ul>
+    </div>
+    <div class="right"> 
+            <div class="title">
+                组织结构
+            </div>
+            <div class="small-title">
+                <span class="title-1">&nbsp;&nbsp;组织结构</span>
+                <span class="title-2">自定义字段</span>
+            </div>
+            <div>
+                <div class="table">
+                    
+                </div>
+                <div class="details">
+                    <div class="hdbox">
+                        <div class="row">
+                            <div class="col-sm-3" style="min-width:180px;">
+                                <div class="user-list" style="overflow:auto;" id="treeArea">
+                                  <tree-view tree-data="departments" text-field="name" value-field='id'
+                                        selected-item="selectedItem"
+                                        item-clicked="vm.departmentListClick(item)">
+                                 </tree-view> 
+                                </div>
+                            </div>
+                            <div class="col-sm-9">
+                                <div class="border-right  border-left " id="rightArea">
+                                  <div class="tabcon1">
+                                    <div class="border-bottom p15">
+                                      <button type="button" class="btn btn-default waves-effect waves-light"
+                                              ng-show="isCurrentHeadquarters() || isCurrentBranchDepartment()"
+                                              ng-click="vm.openAddBranchDepartmentModal()"><i class="glyphicon glyphicon-plus"></i>创建分部
+                                      </button>
+                                      <button type="button" class="btn btn-default waves-effect waves-light"
+                                              ng-show="vm.shouldShowCreateDepartmentBtn()"
+                                              ng-click="vm.openAddDepartmentModal()"><i class="glyphicon glyphicon-plus"></i>创建部门
+                                      </button>
+                                    </div>
+                                    <form class="form-horizontal m-t-20 p15" name="edit_company_form"
+                                          ng-submit="updateCompanyName()" style="overflow:auto;"
+                                          data-ng-if="selectedItem.is_company">
+                                      <div class="form-group form-group-sm">
+                                        <label class="col-sm-5 control-label col-md-3">分部编码
+                                          <span class="text-danger middle p-r-10">*</span>
+                                        </label>
+                                        <div class="col-sm-6 col-md-6">
+                                          <input type="text" ng-model="company.name" name="company_name"
+                                                 class="form-control" placeholder="" required>
+                                          <div class="error"
+                                               ng-messages="edit_company_form.company_name.$error"
+                                               ng-show="edit_company_form.company_name.$touched"
+                                               ng-messages-multiple>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="form-group m-b-0">
+                                        <div class="col-sm-offset-2 col-sm-9">
+                                        </div>
+                                      </div>
+                                    </form>
+                                    <form class="form-horizontal m-t-20 p15" id="formEditDpt" name="edit_department_form"
+                                          ng-submit="vm.openEditDepartmentModal()" style="overflow: auto"
+                                          ng-if="!selectedItem.is_company ">
+                                          <div class="form-group form-group-sm">
+                                            <label class="col-sm-5 control-label col-md-3">分部名称
+                                              <span class="text-danger middle p-r-10">*</span>
+                                            </label>
+                                            <div class="col-sm-6 col-md-6">
+                                              <input type="text" ng-model="company.name" name="company_name"
+                                                     class="form-control" placeholder="" required>
+                                              <div class="error"
+                                                   ng-messages="edit_company_form.company_name.$error"
+                                                   ng-show="edit_company_form.company_name.$touched"
+                                                   ng-messages-multiple>
+                                              </div>
+                                            </div>
+                                          </div>
+                          
+                                          <div class="form-group form-group-sm">
+                                            <label class="col-sm-5 control-label col-md-3">分部简称
+                                              <span class="text-danger middle p-r-10"></span>
+                                            </label>
+                                            <div class="col-sm-6 col-md-6">
+                                              <input type="text" ng-model="company.name" name="company_name"
+                                                     class="form-control" placeholder="" required>
+                                              <div class="error"
+                                                   ng-messages="edit_company_form.company_name.$error"
+                                                   ng-show="edit_company_form.company_name.$touched"
+                                                   ng-messages-multiple>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <div class="form-group form-group-sm">
+                                            <label class="col-sm-5 control-label col-md-3">显示顺序
+                                              <span class="text-danger middle p-r-10">*</span>
+                                            </label>
+                                            <div class="col-sm-6 col-md-6">
+                                              <input type="text" ng-model="company.name" name="company_name"
+                                                     class="form-control" placeholder="" required>
+                                              <div class="error"
+                                                   ng-messages="edit_company_form.company_name.$error"
+                                                   ng-show="edit_company_form.company_name.$touched"
+                                                   ng-messages-multiple>
+                                              </div>
+                                            </div>
+                                          </div>
+                          
+                                          <div class="form-group form-group-sm">
+                                            <label class="col-sm-5 control-label col-md-3">上级
+                                              <span class="text-danger middle p-r-10"></span>
+                                            </label>
+                                            <div class="col-sm-6 col-md-6">
+                                              <input type="text" ng-model="company.name" name="company_name"
+                                                     class="form-control" placeholder="" required>
+                                              <div class="error"
+                                                   ng-messages="edit_company_form.company_name.$error"
+                                                   ng-show="edit_company_form.company_name.$touched"
+                                                   ng-messages-multiple>
+                                              </div>
+                                            </div>
+                                          </div>
+                                      </div>
+                                      <div class="form-group form-group-sm">
+                                        <label class="col-sm-5 control-label col-md-3">描述
+                                            <span class="text-danger middle p-r-10"></span>
+                                        </label>
+                                        <div class="col-sm-6 col-md-6"  >
+                                      <textarea style="min-height: 100px;" ng-model="vm.temp.editDepartmentObj.description" name="description"
+                                                class="form-control input-sm" placeholder="" ng-maxlength="1024">
+                                      </textarea>
+                          
+                                          <div class="error"
+                                               ng-messages="edit_department_form.description.$error"
+                                               ng-show="edit_department_form.description.$touched"
+                                               ng-messages-multiple>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="form-group m-b-0">
+                                        <div class="col-sm-offset-2 col-sm-9">
+                                          <button type="submit" class="btn btn-default waves-effect waves-light"
+                                                  ng-disabled="!vm.temp.willUsedDepartmentId || edit_department_form.$invalid"><i
+                                            class="fa fa-save"></i> 保存
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </form>
+                                </div>
+                            </div>
+                         </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function adjustHeight() {
+          var wh = $(window).height();
+          $('#treeArea').css('height', wh - 220);
+          $('#rightArea').css('height', wh - 220);
+          $('#formEditDpt').css('height', wh - 260);
+        }
+        adjustHeight();
+    </script>  
+</body>
+</html> 
